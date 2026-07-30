@@ -46,6 +46,7 @@ System is ready again
 - DFPlayer Mini MP3 module
 - Speaker
 - microSDHC card
+- ELEGOO 0.96-inch, 128x64, yellow/blue I2C OLED display
 - Breadboard, jumper wires, and supporting kit components
 
 ## Current Technical Decisions
@@ -54,6 +55,16 @@ System is ready again
 - Framework: Arduino
 - Confirmed PlatformIO environment: `atmelavr` platform with `uno` board
 - Current USB upload and monitor port: COM3
+- OLED controller family: SSD1306
+- OLED I2C address: `0x3C` (confirmed with an I2C scan)
+- OLED wiring:
+  - GND -> Uno GND
+  - VCC -> Uno 5V
+  - SDA -> Uno A4
+  - SCL -> Uno A5
+- OLED libraries:
+  - `adafruit/Adafruit SSD1306`
+  - `adafruit/Adafruit GFX Library`
 - The earlier GPIO 14 suggestion was based on an incorrect ESP32 assumption and
   must not be used as Uno wiring guidance.
 - Serial monitor speed: 115200 baud
@@ -84,14 +95,16 @@ components.
    Arduino Uno using the `uno` target.
 2. ~~Create the PlatformIO project and verify that it builds.~~ Completed.
 3. ~~Upload a minimal blink and serial-output program.~~ Completed.
-4. Confirm serial output at 115200 baud in PlatformIO Monitor.
-5. Choose and document an Uno digital pin for the PIR signal.
-6. Connect only the PIR sensor and observe motion events in the serial monitor.
-7. Prepare and test the microSD card and DFPlayer Mini separately.
-8. Integrate motion detection with hiss playback.
-9. Add a 10-second, preferably non-blocking cooldown.
-10. Test placement, sensitivity, false triggers, volume, and power stability.
-11. Document the final wiring and operating instructions.
+4. ~~Confirm serial output at 115200 baud in PlatformIO Monitor.~~ Completed.
+5. ~~Wire the OLED and confirm its I2C address.~~ Completed; address is `0x3C`.
+6. Upload the current OLED firmware and visually confirm the displayed text.
+7. Choose and document an Uno digital pin for the PIR signal.
+8. Connect only the PIR sensor and observe motion events in the serial monitor.
+9. Prepare and test the microSD card and DFPlayer Mini separately.
+10. Integrate motion detection with hiss playback.
+11. Add a 10-second, preferably non-blocking cooldown.
+12. Test placement, sensitivity, false triggers, volume, and power stability.
+13. Document the final wiring and operating instructions.
 
 ## Current Status
 
@@ -101,19 +114,27 @@ components.
 - The project builds successfully in PlatformIO.
 - A blink-and-serial firmware test was uploaded and flash-verified successfully
   on July 30, 2026.
-- No external module wiring or component test has been completed yet.
+- Serial Monitor output was confirmed at 115200 baud.
+- The OLED was wired to the Uno and an I2C scanner found it at `0x3C`.
+- The Adafruit SSD1306 and GFX libraries were added to `platformio.ini`.
+- `src/main.cpp` initializes the OLED and uses a reusable
+  `DisplayText(const char* text)` function.
+- The current OLED firmware builds successfully. Its upload and visible output
+  have not yet been recorded as confirmed.
+- Current build memory use: 655 bytes RAM (32.0%) and 15,184 bytes flash (47.1%).
+- The PIR sensor and audio components have not been wired or tested.
 
 ## Immediate Next Step
 
-Open PlatformIO's Serial Monitor at 115200 baud and confirm that
-`Cat Deterrent 2000 is alive` appears once per second. Then choose and document
-the Uno pin that will receive the PIR sensor's output before wiring it.
+Upload the current OLED firmware and confirm that the display shows the heading
+and connection message. If successful, simplify the test message as desired,
+then choose and document the Uno digital pin that will receive the PIR sensor's
+output before wiring it.
 
 ## Future Ideas
 
 Only consider these after Version 1 works reliably:
 
-- OLED status display
 - Wi-Fi configuration and web dashboard
 - Detection counts and statistics
 - Adjustable cooldown and operating schedule

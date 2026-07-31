@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Cat Deterrent 2000 Arduino Uno wiring diagram</title>
+  <desc id="desc">Connections between an Arduino Uno, OLED display, MP3-TF-16P V3.0 audio player, speaker, and push button.</desc>
+
+  <defs>
+    <style>
+      .background { fill: #f7f8fa; }
+      .device { fill: #ffffff; stroke: #263238; stroke-width: 3; rx: 18; }
+      .title { font: 700 28px Arial, sans-serif; fill: #17202a; }
+      .heading { font: 700 22px Arial, sans-serif; fill: #17202a; }
+      .label { font: 18px Consolas, monospace; fill: #17202a; }
+      .note { font: 16px Arial, sans-serif; fill: #37474f; }
+      .wire { fill: none; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; }
+      .power { stroke: #d32f2f; }
+      .ground { stroke: #263238; }
+      .i2c { stroke: #1976d2; }
+      .serial { stroke: #7b1fa2; }
+      .speaker { stroke: #ef6c00; }
+      .button { stroke: #2e7d32; }
+      .pin { fill: #ffffff; stroke-width: 3; }
+      .legend-box { fill: #ffffff; stroke: #b0bec5; stroke-width: 2; rx: 12; }
+    </style>
+  </defs>
+
+  <rect class="background" width="1400" height="900"/>
+  <text class="title" x="700" y="48" text-anchor="middle">Cat Deterrent 2000 — Arduino Uno Wiring</text>
+  <text class="note" x="700" y="78" text-anchor="middle">Disconnect USB power before changing any wires</text>
+
+  <!-- Arduino Uno -->
+  <rect class="device" x="500" y="155" width="400" height="565"/>
+  <text class="heading" x="700" y="195" text-anchor="middle">Arduino Uno</text>
+
+  <circle class="pin serial" cx="500" cy="300" r="9"/><text class="label" x="525" y="307">D10 (RX)</text>
+  <circle class="pin serial" cx="500" cy="385" r="9"/><text class="label" x="525" y="392">D11 (TX)</text>
+
+  <circle class="pin i2c" cx="900" cy="250" r="9"/><text class="label" x="820" y="257">A5</text>
+  <circle class="pin i2c" cx="900" cy="315" r="9"/><text class="label" x="820" y="322">A4</text>
+  <circle class="pin button" cx="900" cy="555" r="9"/><text class="label" x="820" y="562">D2</text>
+
+  <circle class="pin power" cx="650" cy="155" r="9"/><text class="label" x="632" y="185">5V</text>
+  <circle class="pin ground" cx="750" cy="720" r="9"/><text class="label" x="728" y="690">GND</text>
+
+  <text class="note" x="700" y="665" text-anchor="middle">USB supplies the Uno during development</text>
+
+  <!-- OLED -->
+  <rect class="device" x="1010" y="130" width="330" height="255"/>
+  <text class="heading" x="1175" y="170" text-anchor="middle">0.96&quot; I²C OLED</text>
+  <text class="label" x="1040" y="220">GND</text><circle class="pin ground" cx="1020" cy="214" r="8"/>
+  <text class="label" x="1040" y="270">VCC</text><circle class="pin power" cx="1020" cy="264" r="8"/>
+  <text class="label" x="1040" y="320">SCL</text><circle class="pin i2c" cx="1020" cy="314" r="8"/>
+  <text class="label" x="1040" y="370">SDA</text><circle class="pin i2c" cx="1020" cy="364" r="8"/>
+
+  <!-- DFPlayer -->
+  <rect class="device" x="60" y="110" width="330" height="500"/>
+  <text class="heading" x="225" y="150" text-anchor="middle">MP3-TF-16P V3.0</text>
+  <text class="note" x="225" y="177" text-anchor="middle">SD holder face, text at top</text>
+
+  <text class="label" x="105" y="225">VCC</text><circle class="pin power" cx="380" cy="219" r="8"/>
+  <text class="label" x="105" y="275">RX</text><circle class="pin serial" cx="380" cy="269" r="8"/>
+  <text class="label" x="105" y="325">TX</text><circle class="pin serial" cx="380" cy="319" r="8"/>
+  <text class="label" x="105" y="375">DAC_R</text>
+  <text class="label" x="105" y="425">DAC_L</text>
+  <text class="label" x="105" y="475">SPK1</text><circle class="pin speaker" cx="380" cy="469" r="8"/>
+  <text class="label" x="105" y="525">GND</text><circle class="pin ground" cx="380" cy="519" r="8"/>
+  <text class="label" x="105" y="575">SPK2</text><circle class="pin speaker" cx="380" cy="569" r="8"/>
+
+  <!-- 1K resistor -->
+  <rect x="430" y="373" width="55" height="24" fill="#e8d5a7" stroke="#7b1fa2" stroke-width="3" rx="5"/>
+  <text class="note" x="457" y="365" text-anchor="middle">1 kΩ</text>
+
+  <!-- Speaker -->
+  <rect class="device" x="60" y="680" width="330" height="130"/>
+  <text class="heading" x="225" y="725" text-anchor="middle">4–8 Ω Speaker</text>
+  <circle class="pin speaker" cx="380" cy="745" r="8"/>
+  <circle class="pin speaker" cx="380" cy="785" r="8"/>
+  <text class="note" x="225" y="772" text-anchor="middle">Connect only to SPK1/SPK2</text>
+
+  <!-- Button -->
+  <rect class="device" x="1010" y="475" width="330" height="170"/>
+  <text class="heading" x="1175" y="520" text-anchor="middle">Push Button</text>
+  <circle class="pin button" cx="1020" cy="555" r="8"/>
+  <circle class="pin ground" cx="1020" cy="605" r="8"/>
+  <text class="note" x="1050" y="562">one side</text>
+  <text class="note" x="1050" y="612">opposite side</text>
+
+  <!-- Power routes above and ground routes below, never across the Uno -->
+  <path class="wire power" d="M380 219 H420 V100 H650 V155"/>
+  <path class="wire power" d="M1020 264 H970 V100 H650"/>
+  <path class="wire ground" d="M380 519 H450 V830 H750 V720"/>
+  <path class="wire ground" d="M1020 214 H945 V830 H750"/>
+  <path class="wire ground" d="M1020 605 H925 V830"/>
+
+  <!-- I2C -->
+  <path class="wire i2c" d="M900 250 H970 V314 H1020"/>
+  <path class="wire i2c" d="M900 315 H950 V364 H1020"/>
+
+  <!-- UART serial -->
+  <path class="wire serial" d="M380 319 H465 V300 H500"/>
+  <path class="wire serial" d="M380 269 H405 V385 H430"/>
+  <path class="wire serial" d="M485 385 H500"/>
+
+  <!-- Button -->
+  <path class="wire button" d="M900 555 H1020"/>
+
+  <!-- Speaker -->
+  <path class="wire speaker" d="M380 469 H420 V745 H380"/>
+  <path class="wire speaker" d="M380 569 H440 V785 H380"/>
+
+  <!-- Inline direction labels -->
+  <text class="note" x="415" y="296">TX →</text>
+  <text class="note" x="400" y="420">← RX</text>
+
+  <!-- Legend -->
+  <rect class="legend-box" x="980" y="700" width="360" height="145"/>
+  <text class="heading" x="1005" y="735">Wire legend</text>
+  <line class="wire power" x1="1010" y1="770" x2="1050" y2="770"/><text class="note" x="1065" y="776">5V power</text>
+  <line class="wire ground" x1="1180" y1="770" x2="1220" y2="770"/><text class="note" x="1235" y="776">Ground</text>
+  <line class="wire i2c" x1="1010" y1="810" x2="1050" y2="810"/><text class="note" x="1065" y="816">I²C</text>
+  <line class="wire serial" x1="1110" y1="810" x2="1150" y2="810"/><text class="note" x="1165" y="816">UART</text>
+  <line class="wire speaker" x1="1240" y1="810" x2="1280" y2="810"/><text class="note" x="1295" y="816">Audio</text>
+</svg>

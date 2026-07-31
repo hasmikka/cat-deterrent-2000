@@ -41,13 +41,19 @@ System is ready again
 
 ## Hardware on Hand
 
+- SunFounder 3-in-1 Ultimate Starter Kit for Arduino Uno, ASIN `B0B778L1DZ`
 - Arduino Uno (USB identity and successful upload confirmed)
-- HC-SR501 PIR motion sensor
 - DFPlayer Mini MP3 module
 - Speaker
 - microSDHC card
 - ELEGOO 0.96-inch, 128x64, yellow/blue I2C OLED display
 - Breadboard, jumper wires, and supporting kit components
+
+## Hardware Still Needed or Unverified
+
+- HC-SR501 PIR motion sensor: required for Version 1, but physical ownership has
+  not been confirmed. It is not included in the SunFounder 3-in-1 Ultimate
+  Starter Kit and must be purchased separately unless already owned.
 
 ## Current Technical Decisions
 
@@ -97,7 +103,8 @@ components.
 3. ~~Upload a minimal blink and serial-output program.~~ Completed.
 4. ~~Confirm serial output at 115200 baud in PlatformIO Monitor.~~ Completed.
 5. ~~Wire the OLED and confirm its I2C address.~~ Completed; address is `0x3C`.
-6. Upload the current OLED firmware and visually confirm the displayed text.
+6. ~~Upload the current OLED firmware and visually confirm the displayed
+   text.~~ Completed.
 7. Choose and document an Uno digital pin for the PIR signal.
 8. Connect only the PIR sensor and observe motion events in the serial monitor.
 9. Prepare and test the microSD card and DFPlayer Mini separately.
@@ -119,17 +126,16 @@ components.
 - The Adafruit SSD1306 and GFX libraries were added to `platformio.ini`.
 - `src/main.cpp` initializes the OLED and uses a reusable
   `DisplayText(const char* text)` function.
-- The current OLED firmware builds successfully. Its upload and visible output
-  have not yet been recorded as confirmed.
+- The current OLED firmware builds, uploads, and displays text successfully.
 - Current build memory use: 655 bytes RAM (32.0%) and 15,184 bytes flash (47.1%).
-- The PIR sensor and audio components have not been wired or tested.
+- The exact starter kit was identified as SunFounder ASIN `B0B778L1DZ`. Its
+  published contents do not include an HC-SR501 PIR motion sensor.
+- The PIR and audio components have not been wired or tested.
 
 ## Immediate Next Step
 
-Upload the current OLED firmware and confirm that the display shows the heading
-and connection message. If successful, simplify the test message as desired,
-then choose and document the Uno digital pin that will receive the PIR sensor's
-output before wiring it.
+Obtain an HC-SR501 PIR motion sensor. Then choose and document the Uno digital
+pin that will receive its output before wiring it.
 
 ## Future Ideas
 
@@ -143,9 +149,43 @@ Only consider these after Version 1 works reliably:
 - Home Assistant integration
 - Camera-based filtering
 - AI recognition of the specific cat
+- Solar-assisted battery power
 
 The previously preferred camera candidate was the Seeed Studio XIAO ESP32-S3
 Sense, but camera hardware should be reevaluated when that phase begins.
+
+## Deferred TODOs
+
+- Design and 3D-print a complete enclosure after the controller, OLED, PIR,
+  DFPlayer, speaker, antenna, connectors, and power arrangement have been
+  finalized. Use Seeed Studio's XIAO ESP32-S3 Sense dimensions and downloadable
+  3D models as the starting reference:
+  <https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/>
+- The enclosure must leave openings for the camera lens, USB-C connector,
+  speaker, PIR lens, and OLED, and must not obstruct the Wi-Fi/Bluetooth antenna.
+- Add a future solar-power version after the complete device's average and peak
+  current have been measured. The likely architecture is:
+
+  ```text
+  Solar panel
+      |
+      v
+  Solar-aware single-cell LiPo charger with power sharing
+      |
+      v
+  Protected 3.7 V LiPo battery
+      |
+      v
+  Regulated 5 V boost converter
+      |
+      v
+  Controller, PIR, OLED, DFPlayer, and speaker
+  ```
+
+  Do not connect a panel directly to the controller or battery. Size the panel,
+  battery, charger, and regulator from measured consumption and the actual light
+  available at the plant. Include safe power-source isolation so external 5 V
+  and USB cannot backfeed one another.
 
 ## Handoff Prompt for a New Chat
 

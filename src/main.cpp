@@ -20,9 +20,10 @@ Adafruit_SSD1306 display(
 const int DFPLAYER_RX_PIN = 10;
 const int DFPLAYER_TX_PIN = 11;
 const int BUTTON_PIN = 2;
+const int MOTION_SENSOR_PIN = 5;
 
 const unsigned long BUTTON_DEBOUNCE_MS = 50;
-const unsigned long SOUND_INTERVAL_MS = 5000;
+const unsigned long MOTION_SENSOR_WARMUP_MS = 30000;
 
 // Sound numbers correspond to files in the microSD card's /mp3 folder:
 // /mp3/0001.mp3, /mp3/0002.mp3, and so on.
@@ -47,12 +48,13 @@ const int SOUND_COUNT = sizeof(SOUND_TRACKS) / sizeof(SOUND_TRACKS[0]);
 SoftwareSerial dfPlayerSerial(DFPLAYER_RX_PIN, DFPLAYER_TX_PIN);
 DFRobotDFPlayerMini dfPlayer;
 
-bool soundLoopRunning = false;
 int nextSoundIndex = 0;
 int lastButtonReading = HIGH;
 int stableButtonState = HIGH;
+bool motionDetectionStarted = false;
+bool previousMotionState = LOW;
 unsigned long lastButtonChangeAt = 0;
-unsigned long lastSoundStartedAt = 0;
+unsigned long motionDetectionCount = 0;
 
 const __FlashStringHelper* SoundName(int trackNumber) {
   switch (trackNumber) {
@@ -86,7 +88,31 @@ void DisplayMessage(
     display.println(detail);
   }
 
+  // Keep the session count on the bottom eight-pixel text row.
+  display.setCursor(0, SCREEN_HEIGHT - 8);
+  display.print(F("Motion count: "));
+  display.print(motionDetectionCount);
+
   display.display();
+}
+
+void InitializeMotionSensor() {
+  // The HC-SR501 OUT pin is a digital signal: HIGH means motion detected.
+  pinMode(MOTION_SENSOR_PIN, INPUT);
+
+  Serial.println(F("Motion sensor warming up for 30 seconds..."));
+  DisplayMessage(F("Motion sensor"), F("Warming up..."));
+
+  // PIR sensors need time to establish a stable infrared baseline after power-up.
+  delay(MOTION_SENSOR_WARMUP_MS);
+
+  Serial.println(F("Motion sensor ready on pin 5."));
+  DisplayMessage(F("Motion sensor"), F("Motion sensor ready"));
+  
+}
+
+bool MotionDetected() {
+  return digitalRead(MOTION_SENSOR_PIN) == HIGH;
 }
 
 void PlayNextSound() {
@@ -95,10 +121,8 @@ void PlayNextSound() {
 
   Serial.print(F("Playing sound number "));
   Serial.println(trackNumber);
-  DisplayMessage(F("Playing"), SoundName(trackNumber));
 
   nextSoundIndex = (nextSoundIndex + 1) % SOUND_COUNT;
-  lastSoundStartedAt = millis();
 }
 
 void setup() {
@@ -114,6 +138,8 @@ void setup() {
       // Stop here because the display could not be initialized.
     }
   }
+
+  InitializeMotionSensor();
 
   DisplayMessage(F("Starting"), F("DFPlayer..."));
 
@@ -142,8 +168,11 @@ void setup() {
   dfPlayer.volume(20);
   delay(200);
 
-  Serial.println(F("Ready. Press the button to start the sound loop."));
-  DisplayMessage(F("Ready"), F("Press button"));
+  // Record the current PIR state so startup does not look like a new event.
+  previousMotionState = MotionDetected();
+
+  Serial.println(F("Ready. Press the button to arm motion detection."));
+  DisplayMessage(F("Motion disabled"), F("Press to arm"));
 }
 
 void loop() {
@@ -161,24 +190,32 @@ void loop() {
 
     // INPUT_PULLUP means a pressed button reads LOW.
     if (stableButtonState == LOW) {
-      soundLoopRunning = !soundLoopRunning;
+      motionDetectionStarted = !motionDetectionStarted;
 
-      if (soundLoopRunning) {
-        Serial.println(F("Sound loop started."));
-        nextSoundIndex = 0;
-        PlayNextSound();
+      if (motionDetectionStarted) {
+        Serial.println(F("Motion detection armed."));
+        DisplayMessage(F("Motion armed"), F("Watching..."));
       } else {
         dfPlayer.stop();
-        Serial.println(F("Sound loop stopped."));
-        DisplayMessage(F("Loop stopped"), F("Press to start"));
+        Serial.println(F("Motion detection disabled."));
+        DisplayMessage(F("Motion disabled"), F("Press to arm"));
       }
     }
   }
 
   lastButtonReading = buttonReading;
 
-  if (soundLoopRunning &&
-      millis() - lastSoundStartedAt >= SOUND_INTERVAL_MS) {
+  bool currentMotionState = MotionDetected();
+
+  // Trigger once when the PIR changes from no motion (LOW) to motion (HIGH).
+  if (motionDetectionStarted &&
+      currentMotionState == HIGH &&
+      previousMotionState == LOW) {
+    motionDetectionCount++;
+    Serial.println(F("Motion detected."));
+    DisplayMessage(F("Motion detected!!"), F("Is that Lucy?!?"));
     PlayNextSound();
   }
+
+  previousMotionState = currentMotionState;
 }

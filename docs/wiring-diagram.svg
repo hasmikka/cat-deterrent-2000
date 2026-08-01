@@ -1,6 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="1050" viewBox="0 0 1400 1050" role="img" aria-labelledby="title desc">
   <title id="title">Cat Deterrent 2000 Arduino Uno wiring diagram</title>
-  <desc id="desc">Connections between an Arduino Uno, OLED display, MP3-TF-16P V3.0 audio player, speaker, and push button.</desc>
+  <desc id="desc">Connections between an Arduino Uno, HC-SR501 PIR motion sensor, OLED display, MP3-TF-16P V3.0 audio player, speaker, and push button.</desc>
 
   <defs>
     <style>
@@ -17,12 +17,13 @@
       .serial { stroke: #7b1fa2; }
       .speaker { stroke: #ef6c00; }
       .button { stroke: #2e7d32; }
+      .motion { stroke: #00838f; }
       .pin { fill: #ffffff; stroke-width: 3; }
       .legend-box { fill: #ffffff; stroke: #b0bec5; stroke-width: 2; rx: 12; }
     </style>
   </defs>
 
-  <rect class="background" width="1400" height="900"/>
+  <rect class="background" width="1400" height="1050"/>
   <text class="title" x="700" y="48" text-anchor="middle">Cat Deterrent 2000 — Arduino Uno Wiring</text>
   <text class="note" x="700" y="78" text-anchor="middle">Disconnect USB power before changing any wires</text>
 
@@ -35,6 +36,7 @@
 
   <circle class="pin i2c" cx="900" cy="250" r="9"/><text class="label" x="820" y="257">A5</text>
   <circle class="pin i2c" cx="900" cy="315" r="9"/><text class="label" x="820" y="322">A4</text>
+  <circle class="pin motion" cx="900" cy="450" r="9"/><text class="label" x="820" y="457">D5</text>
   <circle class="pin button" cx="900" cy="555" r="9"/><text class="label" x="820" y="562">D2</text>
 
   <circle class="pin power" cx="650" cy="155" r="9"/><text class="label" x="632" y="185">5V</text>
@@ -83,12 +85,21 @@
   <text class="note" x="1050" y="562">one side</text>
   <text class="note" x="1050" y="612">opposite side</text>
 
+  <!-- PIR motion sensor -->
+  <rect class="device" x="1010" y="675" width="330" height="170"/>
+  <text class="heading" x="1175" y="715" text-anchor="middle">HC-SR501 PIR</text>
+  <text class="label" x="1050" y="750">VCC</text><circle class="pin power" cx="1020" cy="744" r="8"/>
+  <text class="label" x="1050" y="790">OUT</text><circle class="pin motion" cx="1020" cy="784" r="8"/>
+  <text class="label" x="1050" y="830">GND</text><circle class="pin ground" cx="1020" cy="824" r="8"/>
+
   <!-- Power routes above and ground routes below, never across the Uno -->
   <path class="wire power" d="M380 219 H420 V100 H650 V155"/>
   <path class="wire power" d="M1020 264 H970 V100 H650"/>
   <path class="wire ground" d="M380 519 H450 V830 H750 V720"/>
   <path class="wire ground" d="M1020 214 H945 V830 H750"/>
   <path class="wire ground" d="M1020 605 H925 V830"/>
+  <path class="wire power" d="M1020 744 H970 V100"/>
+  <path class="wire ground" d="M1020 824 H945 V900 H750 V720"/>
 
   <!-- I2C -->
   <path class="wire i2c" d="M900 250 H970 V314 H1020"/>
@@ -102,6 +113,9 @@
   <!-- Button -->
   <path class="wire button" d="M900 555 H1020"/>
 
+  <!-- PIR motion signal -->
+  <path class="wire motion" d="M900 450 H960 V784 H1020"/>
+
   <!-- Speaker -->
   <path class="wire speaker" d="M380 469 H420 V745 H380"/>
   <path class="wire speaker" d="M380 569 H440 V785 H380"/>
@@ -111,11 +125,12 @@
   <text class="note" x="400" y="420">← RX</text>
 
   <!-- Legend -->
-  <rect class="legend-box" x="980" y="700" width="360" height="145"/>
-  <text class="heading" x="1005" y="735">Wire legend</text>
-  <line class="wire power" x1="1010" y1="770" x2="1050" y2="770"/><text class="note" x="1065" y="776">5V power</text>
-  <line class="wire ground" x1="1180" y1="770" x2="1220" y2="770"/><text class="note" x="1235" y="776">Ground</text>
-  <line class="wire i2c" x1="1010" y1="810" x2="1050" y2="810"/><text class="note" x="1065" y="816">I²C</text>
-  <line class="wire serial" x1="1110" y1="810" x2="1150" y2="810"/><text class="note" x="1165" y="816">UART</text>
-  <line class="wire speaker" x1="1240" y1="810" x2="1280" y2="810"/><text class="note" x="1295" y="816">Audio</text>
+  <rect class="legend-box" x="850" y="920" width="490" height="105"/>
+  <text class="heading" x="875" y="955">Wire legend</text>
+  <line class="wire power" x1="880" y1="985" x2="920" y2="985"/><text class="note" x="935" y="991">5V</text>
+  <line class="wire ground" x1="995" y1="985" x2="1035" y2="985"/><text class="note" x="1050" y="991">GND</text>
+  <line class="wire i2c" x1="1120" y1="985" x2="1160" y2="985"/><text class="note" x="1175" y="991">I²C</text>
+  <line class="wire serial" x1="880" y1="1010" x2="920" y2="1010"/><text class="note" x="935" y="1016">UART</text>
+  <line class="wire speaker" x1="1030" y1="1010" x2="1070" y2="1010"/><text class="note" x="1085" y="1016">Audio</text>
+  <line class="wire motion" x1="1180" y1="1010" x2="1220" y2="1010"/><text class="note" x="1235" y="1016">PIR</text>
 </svg>

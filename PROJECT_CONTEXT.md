@@ -68,6 +68,10 @@ System is ready again
   - VCC -> Uno 5V
   - SDA -> Uno A4
   - SCL -> Uno A5
+- PIR wiring:
+  - VCC -> Uno 5V
+  - OUT -> Uno D5
+  - GND -> Uno GND
 - OLED libraries:
   - `adafruit/Adafruit SSD1306`
   - `adafruit/Adafruit GFX Library`
@@ -130,12 +134,13 @@ components.
 - Current build memory use: 655 bytes RAM (32.0%) and 15,184 bytes flash (47.1%).
 - The exact starter kit was identified as SunFounder ASIN `B0B778L1DZ`. Its
   published contents do not include an HC-SR501 PIR motion sensor.
-- The PIR and audio components have not been wired or tested.
+- The owner reports that the PIR OUT pin is wired to Uno D5. The PIR has not yet
+  been confirmed working in a motion test.
 
 ## Immediate Next Step
 
-Obtain an HC-SR501 PIR motion sensor. Then choose and document the Uno digital
-pin that will receive its output before wiring it.
+Verify the HC-SR501 wiring and observe its LOW/HIGH output transitions in the
+serial monitor before changing the integrated motion/audio behavior.
 
 ## Future Ideas
 

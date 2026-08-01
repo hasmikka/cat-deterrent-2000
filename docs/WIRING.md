@@ -12,6 +12,9 @@ Always disconnect USB power before moving wires.
 | OLED VCC | Uno 5V | OLED accepts 3–5V |
 | OLED SCL | Uno A5 | I²C clock |
 | OLED SDA | Uno A4 | I²C data |
+| PIR VCC | Uno 5V | HC-SR501 power |
+| PIR OUT | Uno D5 | HIGH indicates motion |
+| PIR GND | Uno GND | Common ground |
 | DFPlayer VCC | Uno 5V | MP3-TF-16P V3.0 |
 | DFPlayer GND | Uno GND | On this module, GND is between SPK1 and SPK2 |
 | DFPlayer TX | Uno D10 | Uno SoftwareSerial receive pin |
